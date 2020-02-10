@@ -1,0 +1,29 @@
+﻿First Name,Last Name,Father,Mother,Generation,Gender,Born,Partners
+William,Doe,na,na,1,M,1940,Judy Smith
+Judy,Smith,na,na,1,F,1943,
+John,Doe,William Doe,Judy Smith,2,M,1965,Isabella Williams;
+Matthew,Doe,William Doe,Judy Smith,2,M,1966,Amelia Jones
+Charlotte,Doe,William Doe,Judy Smith,2,F,1968,Michael Davis;
+Timothy,Davis,Michael Davis,Charlotte Doe,3,M,1990,
+Emma,Doe,John Doe,Isabella Williams,3,F,1986,Bob Wilson;
+Ava,Doe,John Doe,Isabella Williams,3,F,1989,Keith Brown; Philip Miller
+George,Doe,John Doe,Isabella Williams,3,M,1982,
+Richard,Doe,John Doe,Isabella Williams,3,M,1995,David York
+Aaron,Doe,Matthew Doe,Amelia Jones,3,M,1998,Michelle Anderson; Heidi Mueller;
+Daniel,Doe,Matthew Doe,Amelia Jones,3,M,1997,
+Samantha,Doe,Bob Wilson,Emma Doe,4,F,2005,
+Ada,Mueller,Aaron Doe,Heidi Mueller,4,F,2020,
+Nathan,Brown,Ava Doe,Keith Brown,4,M,2006,
+Bruce,Miller,Ava Doe,Philip Miller,4,M,2008,
+Jack,Miller,Ava Doe,Philip Miller,4,M,2011,
+Jessica,York,Richard Doe,David York,4,M,2015,
+Paul,Doe,Aaron Doe,Michelle Anderson,4,M,2019,
+Isabella,Williams,na,na,10,F,1970,
+Amelia,Jones,na,na,10,F,1967,
+Michael,Davis,na,na,10,M,1968,
+Bob,Wilson,na,na,10,M,1980,
+Philip,Miller,na,na,10,M,1982,
+Keith,Brown,na,na,10,M,1991,
+David,York,na,na,10,M,1992,
+Michelle,Anderson,na,na,10,F,1996,
+Heidi,Mueller,na,na,10,F,1999,
