@@ -1,6 +1,8 @@
 # D3FamilyTree
 A means of dynamically creating D3.javascript force-directed family trees using python
 
+![Example_tree](https://user-images.githubusercontent.com/25749859/74199799-1f5bc980-4c5d-11ea-8c0f-73d6bd511d9e.png)
+
 The relations are defined using an excel file, for which I've provided an example, then a python script makes nodes and links before being added to a HTML file to make a D3.JS family tree.
 
 
