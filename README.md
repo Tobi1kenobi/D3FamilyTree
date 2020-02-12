@@ -38,3 +38,5 @@ The easiest way to produce a non-functional tree is to have names that do not co
 
 An example CSV file and the corresponding tree can be found in this repository.
 
+## References
+D3 code was heavily adapted from: https://medium.com/ninjaconcept/interactive-dynamic-force-directed-graphs-with-d3-da720c6d7811
