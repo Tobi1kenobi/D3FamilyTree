@@ -190,7 +190,7 @@ template = env.get_template('Tree_template.html')
 #######################################################################
 
 # Load in data
-family = pd.read_csv('example_family.csv')
+family = pd.read_csv('family.csv')
 
 # Make the nodes in the tree
 family_nodes = MakePeopleNodes(family)

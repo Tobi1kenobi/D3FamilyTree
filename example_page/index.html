@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style type="text/css">
+  div.tooltip { 
+    position: absolute;     
+    text-align: left;     
+    width: 150px;          
+    height: auto;        
+    padding: 2px;       
+    font: 12px sans-serif;    
+    background: lightgrey; 
+    border: 3px;    
+    border-radius: 4px;     
+    pointer-events: auto;     
+  }
+</style>
+<svg width="960" height="600"></svg>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js"></script>
+<script>
+
+    var baseNodes = [{'id': 'WilliamDoe', 'label': 'William Doe', 'level': 1, 'born': 1940, 'age': '79/80', 'group': 'Person', 'gender': 'M', 'dad': 'na', 'mum': 'na'}, {'id': 'JudySmith', 'label': 'Judy Smith', 'level': 1, 'born': 1943, 'age': '76/77', 'group': 'Person', 'gender': 'F', 'dad': 'na', 'mum': 'na'}, {'id': 'JohnDoe', 'label': 'John Doe', 'level': 2, 'born': 1965, 'age': '54/55', 'group': 'Person', 'gender': 'M', 'dad': 'William Doe', 'mum': 'Judy Smith'}, {'id': 'MatthewDoe', 'label': 'Matthew Doe', 'level': 2, 'born': 1966, 'age': '53/54', 'group': 'Person', 'gender': 'M', 'dad': 'William Doe', 'mum': 'Judy Smith'}, {'id': 'CharlotteDoe', 'label': 'Charlotte Doe', 'level': 2, 'born': 1968, 'age': '51/52', 'group': 'Person', 'gender': 'F', 'dad': 'William Doe', 'mum': 'Judy Smith'}, {'id': 'TimothyDavis', 'label': 'Timothy Davis', 'level': 3, 'born': 1990, 'age': '29/30', 'group': 'Person', 'gender': 'M', 'dad': 'Michael Davis', 'mum': 'Charlotte Doe'}, {'id': 'EmmaDoe', 'label': 'Emma Doe', 'level': 3, 'born': 1986, 'age': '33/34', 'group': 'Person', 'gender': 'F', 'dad': 'John Doe', 'mum': 'Isabella Williams'}, {'id': 'AvaDoe', 'label': 'Ava Doe', 'level': 3, 'born': 1989, 'age': '30/31', 'group': 'Person', 'gender': 'F', 'dad': 'John Doe', 'mum': 'Isabella Williams'}, {'id': 'GeorgeDoe', 'label': 'George Doe', 'level': 3, 'born': 1982, 'age': '37/38', 'group': 'Person', 'gender': 'M', 'dad': 'John Doe', 'mum': 'Isabella Williams'}, {'id': 'RichardDoe', 'label': 'Richard Doe', 'level': 3, 'born': 1995, 'age': '24/25', 'group': 'Person', 'gender': 'M', 'dad': 'John Doe', 'mum': 'Isabella Williams'}, {'id': 'AaronDoe', 'label': 'Aaron Doe', 'level': 3, 'born': 1998, 'age': '21/22', 'group': 'Person', 'gender': 'M', 'dad': 'Matthew Doe', 'mum': 'Amelia Jones'}, {'id': 'DanielDoe', 'label': 'Daniel Doe', 'level': 3, 'born': 1997, 'age': '22/23', 'group': 'Person', 'gender': 'M', 'dad': 'Matthew Doe', 'mum': 'Amelia Jones'}, {'id': 'SamanthaDoe', 'label': 'Samantha Doe', 'level': 4, 'born': 2005, 'age': '14/15', 'group': 'Person', 'gender': 'F', 'dad': 'Bob Wilson', 'mum': 'Emma Doe'}, {'id': 'AdaMueller', 'label': 'Ada Mueller', 'level': 4, 'born': 2020, 'age': '-1/0', 'group': 'Person', 'gender': 'F', 'dad': 'Aaron Doe', 'mum': 'Heidi Mueller'}, {'id': 'NathanBrown', 'label': 'Nathan Brown', 'level': 4, 'born': 2006, 'age': '13/14', 'group': 'Person', 'gender': 'M', 'dad': 'Ava Doe', 'mum': 'Keith Brown'}, {'id': 'BruceMiller', 'label': 'Bruce Miller', 'level': 4, 'born': 2008, 'age': '11/12', 'group': 'Person', 'gender': 'M', 'dad': 'Ava Doe', 'mum': 'Philip Miller'}, {'id': 'JackMiller', 'label': 'Jack Miller', 'level': 4, 'born': 2011, 'age': '8/9', 'group': 'Person', 'gender': 'M', 'dad': 'Ava Doe', 'mum': 'Philip Miller'}, {'id': 'JessicaYork', 'label': 'Jessica York', 'level': 4, 'born': 2015, 'age': '4/5', 'group': 'Person', 'gender': 'M', 'dad': 'Richard Doe', 'mum': 'David York'}, {'id': 'PaulDoe', 'label': 'Paul Doe', 'level': 4, 'born': 2019, 'age': '0/1', 'group': 'Person', 'gender': 'M', 'dad': 'Aaron Doe', 'mum': 'Michelle Anderson'}, {'id': 'IsabellaWilliams', 'label': 'Isabella Williams', 'level': 10, 'born': 1970, 'age': '49/50', 'group': 'Person', 'gender': 'F', 'dad': 'na', 'mum': 'na'}, {'id': 'AmeliaJones', 'label': 'Amelia Jones', 'level': 10, 'born': 1967, 'age': '52/53', 'group': 'Person', 'gender': 'F', 'dad': 'na', 'mum': 'na'}, {'id': 'MichaelDavis', 'label': 'Michael Davis', 'level': 10, 'born': 1968, 'age': '51/52', 'group': 'Person', 'gender': 'M', 'dad': 'na', 'mum': 'na'}, {'id': 'BobWilson', 'label': 'Bob Wilson', 'level': 10, 'born': 1980, 'age': '39/40', 'group': 'Person', 'gender': 'M', 'dad': 'na', 'mum': 'na'}, {'id': 'PhilipMiller', 'label': 'Philip Miller', 'level': 10, 'born': 1982, 'age': '37/38', 'group': 'Person', 'gender': 'M', 'dad': 'na', 'mum': 'na'}, {'id': 'KeithBrown', 'label': 'Keith Brown', 'level': 10, 'born': 1991, 'age': '28/29', 'group': 'Person', 'gender': 'M', 'dad': 'na', 'mum': 'na'}, {'id': 'DavidYork', 'label': 'David York', 'level': 10, 'born': 1992, 'age': '27/28', 'group': 'Person', 'gender': 'M', 'dad': 'na', 'mum': 'na'}, {'id': 'MichelleAnderson', 'label': 'Michelle Anderson', 'level': 10, 'born': 1996, 'age': '23/24', 'group': 'Person', 'gender': 'F', 'dad': 'na', 'mum': 'na'}, {'id': 'HeidiMueller', 'label': 'Heidi Mueller', 'level': 10, 'born': 1999, 'age': '20/21', 'group': 'Person', 'gender': 'F', 'dad': 'na', 'mum': 'na'}, {'id': 'WilliamDoe;JudySmith', 'label': 'm', 'level': 2, 'born': 0, 'group': 'Partnership'}, {'id': 'JohnDoe;IsabellaWilliams', 'label': 's', 'level': 2, 'born': 0, 'group': 'Partnership'}, {'id': 'MatthewDoe;AmeliaJones', 'label': 'm', 'level': 2, 'born': 0, 'group': 'Partnership'}, {'id': 'CharlotteDoe;MichaelDavis', 'label': 's', 'level': 2, 'born': 0, 'group': 'Partnership'}, {'id': 'EmmaDoe;BobWilson', 'label': 's', 'level': 2, 'born': 0, 'group': 'Partnership'}, {'id': 'AvaDoe;KeithBrown', 'label': 's', 'level': 2, 'born': 0, 'group': 'Partnership'}, {'id': 'AvaDoe;PhilipMiller', 'label': 'm', 'level': 2, 'born': 0, 'group': 'Partnership'}, {'id': 'RichardDoe;DavidYork', 'label': 'm', 'level': 2, 'born': 0, 'group': 'Partnership'}, {'id': 'AaronDoe;MichelleAnderson', 'label': 's', 'level': 2, 'born': 0, 'group': 'Partnership'}, {'id': 'AaronDoe;HeidiMueller', 'label': 's', 'level': 2, 'born': 0, 'group': 'Partnership'}]
+
+    var baseLinks = [{'source': 'WilliamDoe', 'target': 'WilliamDoe;JudySmith', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'JudySmith', 'target': 'WilliamDoe;JudySmith', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'JohnDoe', 'target': 'JohnDoe;IsabellaWilliams', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'IsabellaWilliams', 'target': 'JohnDoe;IsabellaWilliams', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'MatthewDoe', 'target': 'MatthewDoe;AmeliaJones', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'AmeliaJones', 'target': 'MatthewDoe;AmeliaJones', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'CharlotteDoe', 'target': 'CharlotteDoe;MichaelDavis', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'MichaelDavis', 'target': 'CharlotteDoe;MichaelDavis', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'EmmaDoe', 'target': 'EmmaDoe;BobWilson', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'BobWilson', 'target': 'EmmaDoe;BobWilson', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'AvaDoe', 'target': 'AvaDoe;KeithBrown', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'KeithBrown', 'target': 'AvaDoe;KeithBrown', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'AvaDoe', 'target': 'AvaDoe;PhilipMiller', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'PhilipMiller', 'target': 'AvaDoe;PhilipMiller', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'RichardDoe', 'target': 'RichardDoe;DavidYork', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'DavidYork', 'target': 'RichardDoe;DavidYork', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'AaronDoe', 'target': 'AaronDoe;MichelleAnderson', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'MichelleAnderson', 'target': 'AaronDoe;MichelleAnderson', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'AaronDoe', 'target': 'AaronDoe;HeidiMueller', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'HeidiMueller', 'target': 'AaronDoe;HeidiMueller', 'distance': 60, 'strength': 2, 'type': 'partner'}, {'source': 'JohnDoe', 'target': 'WilliamDoe;JudySmith', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'MatthewDoe', 'target': 'WilliamDoe;JudySmith', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'CharlotteDoe', 'target': 'WilliamDoe;JudySmith', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'TimothyDavis', 'target': 'CharlotteDoe;MichaelDavis', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'EmmaDoe', 'target': 'JohnDoe;IsabellaWilliams', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'AvaDoe', 'target': 'JohnDoe;IsabellaWilliams', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'GeorgeDoe', 'target': 'JohnDoe;IsabellaWilliams', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'RichardDoe', 'target': 'JohnDoe;IsabellaWilliams', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'AaronDoe', 'target': 'MatthewDoe;AmeliaJones', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'DanielDoe', 'target': 'MatthewDoe;AmeliaJones', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'SamanthaDoe', 'target': 'EmmaDoe;BobWilson', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'AdaMueller', 'target': 'AaronDoe;HeidiMueller', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'NathanBrown', 'target': 'AvaDoe;KeithBrown', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'BruceMiller', 'target': 'AvaDoe;PhilipMiller', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'JackMiller', 'target': 'AvaDoe;PhilipMiller', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'JessicaYork', 'target': 'RichardDoe;DavidYork', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'PaulDoe', 'target': 'AaronDoe;MichelleAnderson', 'distance': 40, 'strength': 2, 'type': 'child'}, {'source': 'WilliamDoe', 'target': 'JudySmith', 'distance': 300, 'strength': 20, 'type': 'invisible'}, {'source': 'JohnDoe', 'target': 'IsabellaWilliams', 'distance': 180, 'strength': 20, 'type': 'invisible'}, {'source': 'MatthewDoe', 'target': 'AmeliaJones', 'distance': 180, 'strength': 20, 'type': 'invisible'}, {'source': 'CharlotteDoe', 'target': 'MichaelDavis', 'distance': 180, 'strength': 20, 'type': 'invisible'}, {'source': 'EmmaDoe', 'target': 'BobWilson', 'distance': 70, 'strength': 20, 'type': 'invisible'}, {'source': 'AvaDoe', 'target': 'KeithBrown', 'distance': 70, 'strength': 20, 'type': 'invisible'}, {'source': 'AvaDoe', 'target': 'PhilipMiller', 'distance': 70, 'strength': 20, 'type': 'invisible'}, {'source': 'RichardDoe', 'target': 'DavidYork', 'distance': 70, 'strength': 20, 'type': 'invisible'}, {'source': 'AaronDoe', 'target': 'MichelleAnderson', 'distance': 70, 'strength': 20, 'type': 'invisible'}, {'source': 'AaronDoe', 'target': 'HeidiMueller', 'distance': 70, 'strength': 20, 'type': 'invisible'}]
+
+    var nodes = [...baseNodes]
+    var links = [...baseLinks]
+
+    function getNeighbors(node) {
+        return baseLinks.reduce(function (neighbors, link) {
+                if (link.target.id === node.id) {
+                    neighbors.push(link.source.id)
+                } else if (link.source.id === node.id) {
+                    neighbors.push(link.target.id)
+                }
+                return neighbors
+            },
+            [node.id]
+        )
+    }
+
+    function getNeighbors(node) {
+        return baseLinks.reduce(function (neighbors, link) {
+                if (link.target.id === node.id) {
+                    neighbors.push(link.source.id)
+                } else if (link.source.id === node.id) {
+                    neighbors.push(link.target.id)
+                } else if (link.source.id === node.dad.replace(/ /g,"")) {
+                    neighbors.push(link.source.id)
+                } else if (link.source.id === node.mum.replace(/ /g,"")) {
+                    neighbors.push(link.source.id)
+                } else if (link.target.id.includes(node.id.replace(/ /g,""))) {
+                    neighbors.push(link.source.id)
+                }
+                return neighbors
+            },
+            [node.id]
+        )
+    }
+
+    function isNeighborLink(node, link) {
+        return link.target.id === node.id ||
+         link.source.id === node.id ||
+         (link.source.id === node.dad.replace(/ /g,"") && link.target.id.includes(node.dad.replace(/ /g,"")) && link.target.id.includes(node.mum.replace(/ /g,"")) ) ||
+         (link.source.id === node.mum.replace(/ /g,"") && link.target.id.includes(node.mum.replace(/ /g,"")) && link.target.id.includes(node.dad.replace(/ /g,"")) ) ||
+         link.target.id.includes(node.id.replace(/ /g,""))
+    }
+
+
+    function getNodeColor(node, neighbors) {
+        if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
+            return node.level === 1 ? '#e668ec' : '#3bc3d8'
+        }
+
+        return node.level === 1 ? '#ffbeff' : '#d1f7fd'
+    }
+
+    function getNodeOpacity(node, neighbors) {
+        if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
+            return 1
+        }
+        return 0.3
+    }
+
+    function getLinkColor(node, link) {
+        return isNeighborLink(node, link) && link.type === 'partner' ? 'rgba(255, 0, 0, 1)' : 
+        link.type === 'invisible' ? 'rgba(0, 0, 0, 0)' : 
+        isNeighborLink(node, link) ? 'rgba(50, 50, 50, 1)' :
+         '#E5E5E5'
+    }
+
+    function getTextColor(node, neighbors) {
+        return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'black' : 'gray'
+    }
+
+    function getTextSize(node, neighbors) {
+        if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) { 
+            return node.level === 1 ? 20 : node.level === 2 ? 15 : 11
+        }
+        return node.level === 1 ? 10 : node.level === 2 ? 8 : 6
+    }
+
+
+    var width = window.innerWidth
+    var height = window.innerHeight
+    var radius = 60
+
+    var svg = d3.select('svg')
+    svg.attr('width', width).attr('height', height)
+
+    var linkElements,
+        nodeElements,
+        textElements
+
+    // we use svg groups to logically group the elements together
+    var linkGroup = svg.append('g').attr('class', 'links')
+    var nodeGroup = svg.append('g').attr('class', 'nodes')
+    var textGroup = svg.append('g').attr('class', 'texts')
+
+    // we use this reference to select/deselect
+    // after clicking the same element twice
+    var selectedId
+
+    var div = d3.select("body").append("div") 
+        .attr("class", "tooltip")       
+        .style("opacity", 1)            
+        .style("left", 20 + "px")   
+        .style("top", 480 + "px");
+
+    // simulation setup with all forces
+    var linkForce = d3
+        .forceLink()
+        .id(function (link) { return link.id })
+        .distance(function (link) { return link.distance })
+        // .strength(function (link) { return link.strength *2 })
+
+    var collideForce = d3
+        .forceCollide()
+        .radius(3)
+
+    var simulation = d3
+        .forceSimulation()
+        .force('link', linkForce)
+        .force('charge', d3.forceManyBody().strength(-30))
+        // .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('collide', collideForce)
+
+    var dragDrop = d3.drag().on('start', function (node) {
+        node.fx = node.x
+        node.fy = node.y
+    }).on('drag', function (node) {
+        simulation.alphaTarget(0.7).restart()
+        node.fx = d3.event.x
+        node.fy = d3.event.y
+    }).on('end', function (node) {
+        if (!d3.event.active) {
+            simulation.alphaTarget(0)
+        }
+        node.fx = null
+        node.fy = null
+    })
+    function nodeToolTip(node){
+        return node.group === 1 ? '<b>Married or Separated: </b>' + node.label :
+         '<b>Name: </b>' + node.label + 
+         '<br /><b>Born: </b>' + node.born +
+         '<br /><b>Age: </b>' + node.age +
+         '<br /><b>Parents: </b>' + node.mum + ' & ' + node.dad
+    }
+
+    // select node is called on every click
+    // we either update the data according to the selection
+    // or reset the data if the same node is clicked twice
+    function hoverNode(selectedNode) {
+        selectedId = selectedNode.id
+        highlightNode()
+        updateSimulation()
+
+        var neighbors = getNeighbors(selectedNode)
+
+
+        div.html(nodeToolTip(selectedNode) 
+            ) ;  
+        // we modify the styles to highlight selected nodes
+        // nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
+        nodeElements.attr('opacity', function (node) { return getNodeOpacity(node, neighbors) })
+        textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
+        textElements.attr('font-size', function (node) { return getTextSize(node, neighbors) })
+        linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
+    }
+    function resetGraph(selectedNode) {
+        updateSimulation()
+        // nodeElements.attr('fill', function (node) { return node.group === 1 ? '#3bc3d8' : node.group === 2 ? '#e668ec' : '#FF5733' })
+        nodeElements.attr('opacity', 1)
+        textElements.attr('fill', 'black')
+        linkElements.attr('stroke', function (link) { return link.type === 'child' ?  'rgba(50, 50, 50, 0.7)' :
+                                                             link.type === 'partner' ? 'rgba(255, 0, 0, 0.7)' : 
+                                                             'rgba(255, 255, 255, 0)'})
+        textElements.attr('font-size', function (node) { return node.level === 1 ? 18 : node.level === 2 ? 13 : 9})
+    }
+
+    // this helper simple adds all nodes and links
+    // that are missing, to recreate the initial state
+    function highlightNode() {
+        var nodeIds = nodes.map(function (node) { return node.id })
+
+        baseNodes.forEach(function (node) {
+            if (nodeIds.indexOf(node.id) === -1) {
+                nodes.push(node)
+            }
+        })
+
+        links = baseLinks
+    }
+
+    function updateGraph() {
+        // links
+        linkElements = linkGroup.selectAll('line')
+            .data(links, function (link) {
+                return link.target.id + link.source.id
+            })
+
+        linkElements.exit().remove()
+
+        var linkEnter = linkElements
+            .enter().append('line')
+            .attr('stroke-width', function (link) { return link.type === 'child' ? 1 : 2 })
+            .attr('stroke', function (link) { return link.type === 'child' ?  'rgba(50, 50, 50, 0.7)' :
+                                                     link.type === 'partner' ? 'rgba(255, 0, 0, 0.7)' : 
+                                                     'rgba(255, 255, 255, 0)'})
+
+        linkElements = linkEnter.merge(linkElements)
+
+        // nodes
+        nodeElements = nodeGroup.selectAll('circle')
+            .data(nodes, function (node) { return node.id })
+
+        nodeElements.exit().remove()
+        
+
+        var nodeEnter = nodeElements
+            .enter()
+            .append('circle')
+            .attr('r', function (node) { return node.group === 1 ? 1 : 8 })
+            .attr('fill', function (node) { return node.level === 1 ? '#984ea3' :
+                 node.level === 2 ? '#ff7f00' :
+                 node.level === 3 ? '#E1F20F' :
+                 node.level === 4 ? '#66a61e' :
+                 node.level === 5 ? '#a6611a' : 
+                 '#C2C2C2' })
+
+            .attr('stroke', function(node) {return node.gender === 'M' ? '#1f78b4' :
+                                                    node.gender === 'F' ? '#e78ac3': 
+                                                '#FF0000'})
+            .call(dragDrop)
+            .attr('stroke-width', 3)
+            // we link the selectNode method here
+            // to update the graph on every click
+            .on('mouseover', hoverNode)
+            .on("mouseout", resetGraph);
+
+        nodeElements = nodeEnter.merge(nodeElements)
+
+        // texts
+        textElements = textGroup.selectAll('text')
+            .data(nodes, function (node) { return node.id })
+
+        textElements.exit().remove()
+
+        var textEnter = textElements
+            .enter()
+            .append('text')
+            .text(function (node) { return node.label })
+            .attr('font-size', function (node) { return node.level === 1 ? 18 : node.level === 2 ? 13 : 9})
+            .attr('font-family', 'sans-serif')
+            .attr('font-weight', 'bold')
+            .attr('dx', 12)
+
+        textElements = textEnter.merge(textElements)
+    }
+
+    function updateSimulation() {
+        updateGraph()
+
+        simulation.nodes(nodes).on('tick', () => {
+            nodeElements
+                .attr('cx', function (node) { return node.x = Math.max(radius+120, Math.min(width - radius, node.x)); })
+                .attr('cy', function (node) { return node.y = Math.max(radius, Math.min(height - radius, node.y)); })
+            textElements
+                .attr('x', function (node) { return node.x = Math.max(radius, Math.min(width - radius, node.x)); })
+                .attr('y', function (node) { return node.y = Math.max(radius, Math.min(height - radius, node.y)); })
+            linkElements
+                .attr('x1', function (link) { return link.source.x })
+                .attr('y1', function (link) { return link.source.y })
+                .attr('x2', function (link) { return link.target.x })
+                .attr('y2', function (link) { return link.target.y })
+        })
+
+        simulation.force('link').links(links)
+        simulation.alphaTarget(0.7).restart()
+    }
+
+    
+    svg.append("g")
+      .attr("class", "legendGenderCategorical")
+      .attr("transform", "translate(20,100)");
+
+    var GenderCategorical = d3.scaleOrdinal()
+        .domain(['Male', 'Female'])
+        .range(['#1f78b4','#e78ac3']);
+
+    var legendGenderCategorical = d3.legendColor()
+        .shape('circle')
+        .shapeRadius(12)
+        .shapePadding(4)
+        .orient("vertical")
+        .title("Gender:")
+        .titleWidth(150)
+        .scale(GenderCategorical);
+
+    svg.select(".legendGenderCategorical")
+      .call(legendGenderCategorical); 
+
+    svg.append("g")
+      .attr("class", "legendGenerationCategorical")
+      .attr("transform", "translate(20,200)");
+
+    var GenerationCategorical = d3.scaleOrdinal()
+        .domain(['1', '2', '3', '4', '5'])
+        .range(['#984ea3','#ff7f00', "#E1F20F",'#66a61e', '#a6611a']);
+
+    var legendGenerationCategorical = d3.legendColor()
+        .shape('circle')
+        .shapeRadius(10)
+        .shapePadding(3)
+        .orient("vertical")
+        .title("Generations:")
+        .titleWidth(150)
+        .scale(GenerationCategorical);
+
+    svg.select(".legendGenerationCategorical")
+      .call(legendGenerationCategorical); 
+
+
+    svg.append("g")
+      .attr("class", "legendSequential")
+      .attr("transform", "translate(20,360)");
+
+    var ordinal = d3.scaleOrdinal()
+        .domain(["m: Married",'s: Separated', "Child"])
+        .range(['rgba(255, 0, 0, 1)', 'rgba(255, 0, 0, 1)','rgba(0, 0, 0, 1)']);
+
+    var legendSequential = d3.legendColor()
+        .shape('line')
+        .shapeWidth(30)
+        .orient("vertical")
+        .title("Connections:")
+        .titleWidth(150)
+        .scale(ordinal);
+
+    svg.select(".legendSequential")
+      .call(legendSequential); 
+
+    // last but not least, we call updateSimulation
+    // to trigger the initial render
+    updateSimulation()
+
+</script>

@@ -1,16 +1,16 @@
 # D3FamilyTree
-A means of dynamically creating D3.javascript force-directed family trees using python
+A means of dynamically creating D3.js force-directed family trees using python
 
 ![Example_tree](https://user-images.githubusercontent.com/25749859/74199799-1f5bc980-4c5d-11ea-8c0f-73d6bd511d9e.png)
 
-The relations are defined using an excel file, for which I've provided an example, then a python script makes nodes and links before being added to a HTML file to make a D3.JS family tree.
+The relations are defined using a CSV file (for which I've provided an example, `family.csv`), a python script creates nodes and links which are then used to fill in a template HTML file to make an interactive D3.js force-directed graph.
 
 
 ## How to create the example tree
 
-1. Delete `FamilyTree.html`
-2. Run the script `create-tree.py`
-3. Open `FamilyTree.html` in a web browser
+1. Install python 3 - ensure you have the pandas, numpy, os, datetime, and jinja2 libraries
+1. Run the script `create-tree.py`  
+2. Open `FamilyTree.html` in a web browser
 
 ## How to make your own family CSV
 
