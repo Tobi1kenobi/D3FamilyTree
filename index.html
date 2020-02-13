@@ -161,7 +161,7 @@
         node.fy = null
     })
     function nodeToolTip(node){
-        return node.group === 1 ? '<b>Married or Separated: </b>' + node.label :
+        return node.group === 'Partnership' ? '<b>Married or Separated: </b>' + node.label :
          '<b>Name: </b>' + node.label + 
          '<br /><b>Born: </b>' + node.born +
          '<br /><b>Age: </b>' + node.age +
@@ -241,7 +241,7 @@
         var nodeEnter = nodeElements
             .enter()
             .append('circle')
-            .attr('r', function (node) { return node.group === 1 ? 1 : 8 })
+            .attr('r', function (node) { return node.group === 'Partnership' ? 1 : 8 })
             .attr('fill', function (node) { return node.level === 1 ? '#984ea3' :
                  node.level === 2 ? '#ff7f00' :
                  node.level === 3 ? '#E1F20F' :
