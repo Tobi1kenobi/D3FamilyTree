@@ -46,7 +46,7 @@ An example CSV file and the corresponding tree can be found in this repository.
  - [ ] Add (optional) photos in the tooltip
  - [ ] Add support for more than 5 generations
  - [ ] Add tests in python that catch when there are non-matching names or other things that will break the HTML file
- - [ ] Make editing CSV more user friendly
+ - [ ] Make editing tree more user friendly
  - [ ] Allow for looking at tree in a given year (maybe with slider/animation)
 
 ## References
