@@ -15,11 +15,13 @@ The relations are defined using a CSV file (for which I've provided an example, 
 
 ## How to make your own family CSV
 
-The the script `create-tree.py` refers to the example CSV, so after making a new CSV, `create-tree.py` must be modified to read in the new CSV.
+The the script `create-tree.py` refers to the file `family.csv`, so after making a new CSV the existing example `family.csv` file must be deleted and replaced your desired CSV.
 
 ### The columns `First Name`, `Last Name`, `Father`, `Mother`, `Generation`, `Gender`, `Born`, and `Partners` are required.
 
-`First Name` and `Last Name` contain the first and last name of the individual. 
+Each individual in the tree must have a row entry for all of the following:
+
+`First Name` and `Last Name` contain the first and last name of the individual, respectively. 
 
 `Father` contains the first and last name of the individual's father **only if** they exist elsewhere in the CSV file. Spelling **must** match. Use 'na' if the invididual's father is not in the CSV file.
 
@@ -31,7 +33,7 @@ The the script `create-tree.py` refers to the example CSV, so after making a new
 
 `Born` is the year of birth of the individual.
 
-`Partners` contains, in order, the partners that the individual has had either married or had children with. These partners **must be individuals** in the CSV file additionally but with the caveat that the partner individual **does not** have any entries in their Partners column. If an individual has multiple partners these are separated by a semicolon ';', the final partner is assumed to be married to the individual if this is not the case a semicolon should be added after the final partner.
+`Partners` contains, in chronological order, the partners that the individual has either married or had children with. These partners **must be individuals** in the CSV file additionally but with the caveat that the partner individual **does not** have any entries in their Partners column. Semicolons ';' following the partner's name indicate an ended relationship and a subsequent partner can be added after e.g. 'John Doe' indicates married to John Doe whilst 'John Doe; Allan Smith;' indicates separated from John Doe and then separated from Allan Smith.
 
 ### Important
 
