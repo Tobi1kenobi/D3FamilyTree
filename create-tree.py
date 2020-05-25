@@ -4,7 +4,6 @@ from datetime import date
 from jinja2 import Environment, FileSystemLoader
 import os
 
-
 # Global variable, should change later
 # Dictionary that sets different strengths for different types of link
 link_vars = {'partner':{'strength':2,'distance':60,'type':'partner'},
@@ -22,7 +21,6 @@ def GetAge(birth_year):
     '''
     Given a year returns the two possible ages.
     '''
-
     if isinstance(birth_year, int):
         return str(date.today().year - birth_year - 1) + '/' + str(date.today().year - birth_year)
     else:
@@ -182,7 +180,7 @@ def MakeInvisibleLinks(family_nodes, partner_nodes):
     return links_list
 
 env = Environment( loader = FileSystemLoader('.') )
-template = env.get_template('Tree_template.html')
+template = env.get_template('./Tree_template.html')
  
 
 #######################################################################
